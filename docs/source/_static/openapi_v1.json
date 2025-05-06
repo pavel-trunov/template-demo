@@ -1,0 +1,295 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "template-demo",
+    "termsOfService": "https://template-demo.readthedocs.io/en/latest/",
+    "contact": {
+      "name": "Pavel Trunov",
+      "url": "https://github.com/pavel-trunov/template-demo",
+      "email": "pavel@aignostics.com"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/hello/world": {
+      "get": {
+        "tags": [
+          "hello"
+        ],
+        "summary": "Hello World",
+        "description": "Return a hello world message.\n\nReturns:\n    _HelloWorldResponse: A response containing the hello world message.",
+        "operationId": "hello_world_hello_world_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_HelloWorldResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello/echo/{text}": {
+      "get": {
+        "tags": [
+          "hello"
+        ],
+        "summary": "Echo",
+        "description": "Echo back the provided text.\n\nArgs:\n    text (str): The text to echo.\n\nReturns:\n    Echo: The echo.\n\nRaises:\n    422 Unprocessable Entity: If text is not provided or empty.",
+        "operationId": "echo_hello_echo__text__get",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Text"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Echo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Health Endpoint",
+        "description": "Determine aggregate health of the system.\n\nThe health is aggregated from all modules making\n    up this system including external dependencies.\n\nThe response is to be interpreted as follows:\n- The status can be either UP or DOWN.\n- If the service is healthy, the status will be UP.\n- If the service is unhealthy, the status will be DOWN and a reason will be provided.\n- The response will have a 200 OK status code if the service is healthy,\n    and a 503 Service Unavailable status code if the service is unhealthy.\n\nArgs:\n    service (Service): The service instance.\n    response (Response): The FastAPI response object.\n\nReturns:\n    Health: The health of the system.",
+        "operationId": "health_endpoint_system_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Health Endpoint",
+        "description": "Determine aggregate health of the system.\n\nThe health is aggregated from all modules making\n    up this system including external dependencies.\n\nThe response is to be interpreted as follows:\n- The status can be either UP or DOWN.\n- If the service is healthy, the status will be UP.\n- If the service is unhealthy, the status will be DOWN and a reason will be provided.\n- The response will have a 200 OK status code if the service is healthy,\n    and a 503 Service Unavailable status code if the service is unhealthy.\n\nArgs:\n    service (Service): The service instance.\n    response (Response): The FastAPI response object.\n\nReturns:\n    Health: The health of the system.",
+        "operationId": "health_endpoint_healthz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/info": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Info Endpoint",
+        "description": "Determine aggregate info of the system.\n\nThe info is aggregated from all modules making up this system.\n\nIf the token does not match the setting, a 403 Forbidden status code is returned.\n\nArgs:\n    service (Service): The service instance.\n    response (Response): The FastAPI response object.\n    token (str): Token to present.\n\nReturns:\n    dict[str, Any]: The aggregate info of the system.",
+        "operationId": "info_endpoint_system_info_get",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Info Endpoint System Info Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Echo": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Text",
+            "description": "The echo",
+            "examples": [
+              "HELLO, WORLD!"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "Echo",
+        "description": "Response model for echo endpoint."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/_HealthStatus"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "components": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Health"
+            },
+            "type": "object",
+            "title": "Components"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "Health",
+        "description": "Represents the health status of a service with optional components and failure reasons.\n\n- A health object can have child components, i.e. health forms a tree.\n- Any node in the tree can set itself to DOWN. In this case the node is required\n    to set the reason attribute. If reason is not set when DOWN,\n    automatic model validation of the tree will fail.\n- DOWN'ness is propagated to parent health objects. I.e. the health of a parent\n    node is automatically set to DOWN if any of its child components are DOWN. The\n    child components leading to this will be listed in the reason.\n- The root of the health tree is computed in the system module. The health of other\n    modules is automatically picked up by the system module."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "_HealthStatus": {
+        "type": "string",
+        "enum": [
+          "UP",
+          "DOWN"
+        ],
+        "title": "_HealthStatus"
+      },
+      "_HelloWorldResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "The hello world message",
+            "examples": [
+              "Hello, world!"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "_HelloWorldResponse",
+        "description": "Response model for hello-world endpoint."
+      }
+    }
+  }
+}

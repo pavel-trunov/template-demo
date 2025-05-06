@@ -1,0 +1,29 @@
+_commit: v0.17.10
+_src_path: gh:helmut-hoffer-von-ankershoffen/oe-python-template
+attestations_enabled: false
+author_email: pavel@aignostics.com
+author_github_username: pavel-trunov
+author_name: Pavel Trunov
+codeql_enabled: true
+docker_io_enabled: false
+docker_io_image_name: template-demo
+docker_io_owner: pavel-trunov
+github_repository_name: template-demo
+github_repository_owner: pavel-trunov
+github_repository_url_https: https://github.com/pavel-trunov/template-demo
+github_repository_url_ssh: git@github.com:pavel-trunov/template-demo.git
+import_package_name: template_demo
+org_email: pavel@aignostics.com
+org_name: Pavel Trunov
+project_description: Python project testing an oe-template usability and convenience.
+project_icon: 🧠
+project_name: template-demo
+pypi_distribution_name: template-demo
+pypi_enabled: false
+readthedocs_domain: readthedocs.org
+readthedocs_project_key: template-demo
+sonarqube_key: pavel-trunov_template-demo
+streamlit_project_key: template-demo
+uptime_badge_snippet: 'No'
+vercel_badge_snippet: 'No'
+vercel_function_enabled: false
